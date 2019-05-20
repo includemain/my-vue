@@ -1,0 +1,58 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Vue 组件传悌方法 </title>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    
+</head>
+<body>
+<div id="app">
+    <com :combaba="msg"> </com>   使用父组件的数据值
+    <com2 @dd="show"></com2>    <!--使用父组件的方法，使用v-on来绑定-->
+</div>
+<template id="temp1">
+        <div>
+            <h1 >着 his一个子组件{{combaba}}</h1>
+            <input type="button" value="aaaashow" @click = "myclick">
+        </div>
+    </template>
+<script>
+    //定义一个自变量模版类型的组件模版对象,这个里面可以有好多的东西，然后直接在Vue对象里面命名使用就可以了
+    var com = {
+        template:'#temp1',
+        props:['combaba'],
+        methods:{
+
+            myclick(){
+                this.$emit('dd')     //必须要这么写，emit英文意思为调用，触发
+                // this.$emit('dd',1,3324) 在‘dd’后面的可以加参数哦😯、
+            }
+        }
+            
+        
+    }
+ 
+var aa =new Vue({
+  el: '#app',
+  data: {
+    msg:'哈哈哈'
+  },
+  methods: {
+    show(){
+        alert('啊呀呀呀呀')
+    }
+  },
+  components: {
+      com     ,          //com就等于  com:com
+      com2:com        //将外面声明好的组件模版在这里命名使用,在这里，
+  }
+                       
+                                   
+  
+})
+</script>
+</body>
+</html>

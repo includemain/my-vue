@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/bootstrap.css">
+    <script src="./js/vue-2.4.0.js"></script>
+</head>
+
+<body>
+    <div id="app">
+
+
+        <div class="panel text-center  panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">品牌添案例</h3>
+            </div>
+            <div class="panel-body form-inline">
+                <label>
+                    id:
+                    <input type="text" class="form-control" v-model="id">
+                </label>
+                <label>
+                     name:                            <!-- 这里面的enter可以使用键盘码来代替，那个按键的码，就绑定到那个按键 -->
+                    <input type="text" class="form-control" v-model="name" @keyup.enter = "add()">
+                </label>
+
+                <!-- 这里的add方法可以不写后面的括号，写上哭号之后可以传输参数 -->
+                <button type="button" class="btn btn-primary" @click="add()">添加</button>
+                <label style="margin-left: 20px;">
+                    seach:
+                    <input type="text" class="form-control" v-model="keyword">
+                </label>
+                
+            </div>
+        </div>
+
+        <table class="table table-hover table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>name</th>
+                    <th>ctime</th>
+                    <th>pppp</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in seach(keyword)" :key="item.id">
+                    <td>{{item.id}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.ctime}}</td>
+                    <td><span @click="del(item.id)">删除</span></td>
+                    <td><span @click="del2(item.id)">删除2</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                id: '',
+                name: '',
+                keyword: '',
+                list: [{
+                    id: '1',
+                    name: 'aray',
+                    ctime: new Date()
+                }, {
+                    id: '2',
+                    name: 'aray2',
+                    ctime: new Date()
+                }]
+            },
+            methods: {
+                add() {
+                    var aaa = {
+                        id: this.id,
+                        name: this.name,
+                        ctime: new Date()
+                    }
+                    this.list.push(aaa);
+                    this.id = this.name = ''
+                },
+                del(id) {
+                    this.list.some((item, i) => { //循环查摘这个数组，一旦找到制定条件的，就进入下面的函数
+                        if (item.id === id) {
+                            this.list.splice(i, 1) //删除这个第i行的一行数组
+                            return true; //return true表示已经查找到，然后终止这个循环
+                        }
+                    })
+                },
+                del2(id) {
+                    var idx = this.list.findIndex(item => { //找到定向的索引，然后直接将这个索引删除
+                        if (item.id == id) {
+                            return true;
+                        }
+                    })
+                    console.log(idx)
+                    this.list.splice(idx, 1)
+                },
+                seach(keyword) {
+
+                            // 一、在list里面循环，只要找到符合条件的，就push到一个新数组里面，然后返回这个数组
+                    // var newlist = [];
+                    // this.list.forEach(item => {         也是循环这个数组，这个数组没有办法被终止，some会被种植
+                    //     if (item.id.indexOf(keyword) != -1) {
+                    //         newlist.push(item)
+                    //     }
+                    // })
+                    // return newlist;
+
+                            //二、筛选，在list里面将符合条件的筛选出来，直接返回回去
+                     return this.list.filter(item =>{
+                        if(item.id.includes(keyword)){  //includes，如果包含后面的那个，就返回true，然后继续执行
+                            return item;
+                        }
+                    })
+
+
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

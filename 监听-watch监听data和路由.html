@@ -1,0 +1,77 @@
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Vue </title>
+<script src="js/vue-2.4.0.js"></script>
+<script src="js/vue-router-3.0.1.js"></script> 
+
+</head>
+<body>
+<div id="app">
+    <!-- 正常情况监听文本框 -->
+    <input type="text" v-model="aaa" @keyup="haha">+<!--keyup每当有案件被按下松开的时候，都会调用这个函数-->
+    <input type="text" v-model="bbb" @keyup="haha">=
+    <input type="text" v-model = "ccc">
+  <!-- 使用watch监听时--><br>
+  <input type="text" v-model="ddd">+
+  <input type="text" v-model="eee">=
+  <input type="text" v-model = "fff">
+
+    <router-view></router-view>
+    <router-link to="/login">ligin</router-link>
+    <router-link to="/register">register</router-link>
+</div>
+
+<script>
+var login={
+  template:'<h1>登陆</h1>'
+}
+var register={
+  template:'<h1>住啥事</h1>'
+}
+var routerobj = new VueRouter({
+  routes:[
+    {path:'/login',component:login},
+    {path:'/register',component:register}
+  ]
+})
+var aa =new Vue({
+  el: '#app',
+  data: {
+    aaa:'',
+    bbb:'',
+    ccc:'',
+    ddd:'',
+    eee:'',
+    fff:''
+  },
+  methods: {
+    haha(){
+        this.ccc = this.aaa + this.bbb
+    }
+  },
+  router:routerobj,
+  watch:{   //相比于使用keyup来监听data，watch函数更麻烦，但是它又一个跟大的好处是监听路由等数值的变换，这种变话无法使用keyup监听到，such as
+    'ddd':function(){     //当aaa发生改变时，执行的监听函数,名字可以不加引号，但是如果名字里面有 - 时，必须加引号
+      //console.log(this.fff = this.ddd+this.eee);--------这只是其中的一种，watch给提供了另外的方法，即在括号里面写参数
+      
+    },
+    'eee':function(newVal,oldVal){
+        this.fff = newVal + '--' + oldVal//newval表示新生成的值，oldval表示就的那个
+    },
+    '$route.path':function(newVal,oldVal){
+        alert(newVal + oldVal)
+    }
+  }
+                       
+                                   
+  
+})
+</script>
+</body>
+</html>

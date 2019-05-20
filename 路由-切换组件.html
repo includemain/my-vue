@@ -1,0 +1,102 @@
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Vue 测试实例 </title>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+<script src="https://unpkg.com/vue-router/dist/vue-router.js "></script> <!--要先倒入vue.js，然后在倒入这个 -->
+    <style>
+        /* 这个类是由vue-router给提供的自带的类，可以使选中的组件高亮提示，可以在改变这个类名字,下面这个是已经改变的 */
+        .router-link-active,.myactive{     
+        color:red;
+        font-weight: 600;
+        font-size: 50px;
+        font-style: italic;
+
+    }
+    .my-enter,.my-leave-to{
+        opacity: 0;
+        transform: translateX(140px)
+    }
+    .my-enter-active,.my-leave-active{
+        transition: all 0.5s ease;
+    }
+    </style>    
+
+</head>
+<body>
+    <!--后端的路由，url地址对应的服务器上对应的资源-->
+    <!--前端的路由，单面来说，通过url中的hash（#号，即一个页面后面带一个#号，such as ww.baidu.com/#/logun  ）来实现不同页面之间的切换，-->
+    <!-- 但页面中，只有一个页面时，通过hash来切换不同的组件，实现点击a链接页面不跳转进行切换 的功能 -->
+    <!-- html页面中的喵点，就和这个路由差不多 http请求不会包含hash相关的内容-->
+<div id="app">
+    <a href="#/login">登陆</a>
+    <a href="#/register">左侧</a>
+      <!-- <router-view></router-view>由vue-router提供的，路由匹配到到组件，都会放在这里，这个必须有 -->
+    <!--正常情况直接写上面的这个router-view就可以了，要想给他加个动画没可以直接将这个标签包起来-->
+    <transition name="my" mode="out-in">
+            <router-view></router-view>
+    </transition>
+    
+
+    <!--并不推荐直接在上面写一个a链接，vue给提供了一个别的标签-->
+    <!--直接这样会将这段代码以一个a标签的形式呈现出来，若果不想，可在里面添加一个tag标签，such as-->
+    
+    <router-link to="/login" tag="span">show 哈哈</router-link>
+    <router-link to="/register"> show 呵呵呵</router-link>
+</div>
+
+    
+<script>
+var login={
+    template:'<h1>哈哈哈哈哈哈哈哈哈</h1>'
+}
+var register={
+    template:'<h1>呵呵呵呵呵呵呵呵</h1>'
+}
+        // 创建路由对象
+        // 当导入vue-route包之后，在window全局对象中，就有了一个路由的构造函数，叫做VueRouter
+var routerobj = new VueRouter({
+    routes:[
+            // 这个配置对象中的route表示【路由匹配规则】
+            // 每个路由规则，都是一个对象，这个对象身上，有两个必须的属性
+            // 属性1：path——表示监听 那个路由链接地址
+            // 属性2:component——表示，如果路由是前面匹配到的path，则展示component属性对应的组件
+            //component后面的值必须是一个模版对象，不能是组件的名称（组件的名称是写在html中的那一对，模版对象是带有templat的那个）
+
+
+            //当页面一进来的时候，如果想让页面默认展示一个组件，则在组件的跟路径中展示和这个组件即可，如
+            //------------------------------------{path:'/',component:login},
+            //但是这种方式并不推荐，因为会使3用户不明白，为什么是跟路径，却展示login的东西，而login仍然指向这个东西
+            //所以这时推荐使用重定向
+        {path:'/',redirect:'/login'},//使页面一进来，就展示这个组件
+        {path:'/login',component:login},
+        {path:'/register',component:register}
+    ],
+    linkActiveClass:'myactive'//可以通过看官方的api，将这个类在创建好的对象中设置好名字
+})
+new Vue({
+  el: '#app',
+  data: {
+    
+    
+  },
+  create(){
+    
+  },
+  methods: {
+    
+  },
+  router:routerobj      //让组件和路由有一丝丝的联系，使路由可以监听到
+
+  
+
+
+})
+</script>
+</body>
+</html>

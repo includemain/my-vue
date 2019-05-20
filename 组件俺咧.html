@@ -1,0 +1,91 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Vue 测试实例 </title>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    
+</head>
+<body>
+<div id="app">
+  <nb @refrish="refrish"></nb>
+  <ul>
+    <li v-for="(item,index) of list" :key="item.index">
+      {{item.id}}----{{item.name}}----{{item.content}}
+    </li>
+  </ul>
+</div>
+<template id="add">
+  <div>
+    <label>评论人 </label>
+  <input type="text" style="width: 200px;" v-model="name">
+  <label>评论内容 </label>
+  <input type="text" style="width: 200px;" v-model="content">
+  <input type="button" value="发表" style="width: 60px;height: 30px;" @click="addcontent">
+  </div>
+  
+</template>
+    
+<script>
+var nb = {
+  template:'#add',
+  data(){
+    return {
+      name:'',
+      content:''
+    }
+    
+  },
+  methods:{
+   addcontent(){
+      var comment = {id:Date.now(),name:this.name,content:this.content}
+      //从localstorage中拿到评论的内容
+      var list = JSON.parse(localStorage.getItem('cmts') || '[]')
+      list.unshift(comment)
+      //重新保存最新的评论数据
+      localStorage.setItem('cmts',JSON.stringify(list))
+      //清空内容
+      this.name = this.content = ''
+      //window.localStorage.clear()    可以清空本地的所有loaclstoage
+      this.$emit('refrish')
+   }
+  }
+}
+                    // 分析：发表评论的业务逻辑
+                    // 1、评论数据存到哪里去？？ 存放到 localStorage 中
+                    // 2、先组织出一个最新的评论数据对象
+                    // 3、想办法，把 第二步中，得到的评论对象。保存到 localStorage中
+                    // 3.1localStorage 只支持存放字符串数据，要先调用JSON.stringify
+                    // 3.2在保存最新的评论数据之前，要先从localStorage获取到之前评论数据
+                    // 3.3需要先判断localStorage中有无数据，若没有，返回"[]"
+                    // 3.4发最新的列表数据，再次调用JSON。stringify转为数组字符串
+
+                    //使用json.stringify可以将js对象转换成js字符串，使用json.parse将字符串转换成js对象
+new Vue({
+  el: '#app',
+  data: {
+    
+    list:[
+      
+    ]
+  },
+  create(){
+    this.refrish()
+  },
+  methods: {
+    refrish(){
+      var list = JSON.parse(localStorage.getItem('cmts' || '[]'))
+      this.list = list
+    }
+  },
+  components: {
+     nb
+                      
+                                   
+  }
+})
+</script>
+</body>
+</html>

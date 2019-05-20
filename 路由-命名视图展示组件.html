@@ -1,0 +1,83 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Vue </title>
+<script src="js/vue-2.4.0.js"></script>
+<script src="js/vue-router-3.0.1.js"></script> 
+<style>
+    .head{
+        width: 100%;
+        height: 80px;
+        background-color: darkcyan;
+        margin: 0px;
+    }
+    .container{
+        display: flex;/*flex的布局，是一种弹性布局，他的下面的子div需要设置不同的倍数比例*/
+        height: 600px;
+    }
+    .left{
+        flex: 1;
+        background-color: forestgreen;
+        margin: 0px;
+    }
+    .right{
+        flex:4;
+        background-color: fuchsia;
+        margin: 0px;
+    }
+</style>
+</head>
+<body style="padding: 0;margin: 0;">
+<div id="app">
+    <router-view></router-view>
+    <div class="container">
+        <router-view name="left"></router-view>
+        <router-view name="right"></router-view>
+
+    </div>
+    
+</div>
+
+<script>
+var head = {
+    template:'<h1 class="head">this is header</h1>'
+}
+var left = {
+    template:'<h1 class="left">this is left</h1>'
+}
+var right = {
+    template:'<h1 class="right">this is right</h1>'
+}
+var routerobj = new VueRouter({
+    routes:[
+        //因为自己要在页面上展示三个组件，所以要在app内写三个router-view，但是在根目录下，只匹配到一个head组件，所以会直接将这一个组件展示三份
+        //so 不能这样写，要在根目录下同时展示三个组件，则将component变成components
+//        {path:'/',component:head},
+//        {path:'/left',component:left},
+//        {path:'/rifgt',component:right}
+        {path:'/',components:{
+            'default':head,//表示默认的情况下，是展示这个，即不在router-view里面写name，也会展示这个
+            'left':left,   //只展示在name等于left的那一部分
+            'right':right
+        }}
+    ]
+})
+var aa =new Vue({
+  el: '#app',
+  data: {
+    
+  },
+  methods: {
+    
+  },
+  router:routerobj
+                       
+                                   
+  
+})
+</script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Vue 测试实例 </title>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    
+</head>
+<body>
+<div id="app">
+    <!--由于vue不提倡使用document来获取页面中的元素，那么提供来一个叫ref的东西来获取元素-->
+    <!--ref也可以获取组件的元素such as-->
+    <h1 ref="dom1" @click="document1">哈哈哈哈哈哈</h1>
+    <nb ref="nbzj"></nb>
+</div>
+<template id="temp1">
+    
+        <h1 ref="jjj" @click="zishow">what are you doing?</h1>
+        
+        <!--如何调用组件里面的innertext-->
+    
+</template>
+    
+<script>
+var nb = {
+    template:'#temp1',
+    data(){
+        return {
+            zj:'son zj'
+        }
+    },
+    methods:{
+        zishow(){
+            alert('son show')
+            alert(this.$refs.jjj.innerText)
+        }
+    }
+}
+
+new Vue({
+  el: '#app',
+  data: {
+    
+    
+  },
+  create(){
+    
+  },
+  methods: {
+    document1(){
+        //使用固定的格式，上面是ref，下面是refs，说明refs中可以含有多个ref获取到的元素
+        alert(this.$refs.dom1.innerText)
+        this.$refs.nbzj.zishow() //调用子组件的方法
+        alert(this.$refs.nbzj.zj)       //调用子组件的data中的数据
+        
+    }
+  },
+  components: {
+      nb
+  }
+
+})
+</script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/bootstrap.css">
+    <script src="./js/vue-2.4.0.js"></script>
+    <script src="./js/vue-resource-1.3.4.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        
+        <div class="panel panel-primary">
+              <div class="panel-heading">
+                    <h3 class="panel-title">品牌获取列表</h3>
+              </div>
+              <div class="panel-body">
+                    
+                    <span class="form-inline">
+                        <input type="text" class="form-control" placeholder="add" v-model = "name">
+                        <input type="button" value="添加" class="btn btn-primary" @click="add()">
+                    </span>                   
+              </div>
+        </div>
+        
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>name</th>
+                    <th>ctime</th>
+                    <th>ppp</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for = "item in list" :key="item.id">
+                    <td>{{item.id}}</td>
+                    <td>{{item.url}}</td>
+                    <td><a :href="item.img">{{item.img}}</a> </td>
+                    <td>删除</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        
+    </div>
+    <script>
+        //通过全局设置，将请求的根域名写在前面，每次发起请求的url路径，应该以相对路径开头，前面不能带 /
+        Vue.http.options.root = 'http://www.liulongbin.top:3005'
+        new Vue({
+            el: '#app',
+            data: {
+                name:'',
+                list:[
+                    {id:1,name:'嘤嘤嘤',ctime:new Date()}
+                ]
+            },
+            created(){
+                this.creat();  
+            },
+            methods: {
+                creat(){
+                    this.$http.get('api/getlunbo').then(result =>{
+                        result = result.body
+                        if(result.status === 0){
+                            this.list = result.message
+                        }else{
+                            alert('请求失败了呢,亲')
+                        }
+                    })
+                },
+                add(){
+                    this.$http.post('http://www.liulongbin.top:3005/api/getlunbo',{name:this.name},{emulateJSON:true}).then(result => {
+                        result = result.body
+                        if(result.status === 0){
+                            alert('妈个鸡的成功了呢，但是不支持呢，亲')
+                        }else{
+                            alert('请求失败了呢,亲')
+                        }
+                    })
+                }
+
+            },
+            directives: {
+
+            }
+        })
+    </script>
+</body>
+
+</html>

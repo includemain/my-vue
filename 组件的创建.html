@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Vue 测试实例 - 菜鸟教程(runoob.com)</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+
+</head>
+
+<body>
+    <div id="app">
+        <my-com1></my-com1>
+        <!--如果是以驼峰形式名的名字，such as myCom1  ,此时在html中写的组件必须是my-com1来名名字
+                                不使用驼峰来名名字的话，直接写名字即可-->
+        <br>
+        <mycom2></mycom2>
+        <mycom3></mycom3>
+        <prevate></prevate>
+    </div>
+    <template id="nb">
+        <div>
+            <!--因为temolate里面只能有一个根元素，所以必须在外面放一个大的div，-->
+            <!--如果一个页面有两个vue的对象，这个组件也可以被应用到别的对象中去-->
+            <h3>牛逼</h3>
+        </div>
+    </template>
+
+    <script>
+        var com1 = Vue.extend({                 //使用Vue.extend来创建全局的Vue组件
+            template: '<div><h1>啦啦啦 </h1><h1>啦啦啦 </h1></div>'                         //在template中写入html要展示的内容
+        })                                                                               //不管是哪种方式，在template中只能存在一个根目录
+        //即一对标签，such as <div></div>不能两个并列
+        Vue.component('myCom1', com1)            //myCom1表示自己给组件名的名字，到时候在html中应用就会使用这个名字
+        //com1就是自己定义的组件的名字
+
+
+        //把上面的那个更加简化之后，直接写
+        Vue.component('mycom2', {
+            template: '<h1>这是一个更加简化的啦啦啦</h1>'
+        })
+
+        //最强的是下面这种创建组件的方式，可以有代码提示
+        Vue.component('mycom3', {
+            template: '#nb'          //然后在html页面里面写几面具体的组件，注意组件的具体位置必须写在app的外面，不能被抱起来
+        })
+
+
+
+        new Vue({
+            el: '#app',
+            data: {
+                flag: false,
+                seen: true,
+                ok: true
+            },
+            methods: {
+
+            },
+            filters: {
+
+            },
+            directives: {
+
+            },
+            components: {     //定义自己私有的组件
+                prevate: {        //自己名 的名字
+                    template: '#nb'
+                }
+            },
+            beforeCreate() {
+
+            },
+            created() {
+
+            },
+            beforeMount() {
+
+            },
+            mounted() {
+
+            },
+            beforeUpdate() {
+
+            },
+            updated() {
+
+            },
+            beforeDestroy() {
+
+            },
+            destroyed() {
+
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,86 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Vue 组件传悌方法 </title>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+<script src="https://unpkg.com/vue-router/dist/vue-router.js "></script> 
+</head>
+<body>
+<div id="app">
+   <router-view></router-view>
+   <router-link to="/accont">one组件</router-link>
+</div>
+<template id='nb'>
+    <div>
+        <h1>这是一个组件</h1>
+        <router-link to="/accont/login">登陆</router-link> 
+        <router-link to="/accont/register">注册</router-link>
+        <router-view></router-view>
+    </div>
+</template>
+<script>
+var lalala={
+    template:'#nb'
+}
+var login={
+    template:'<h1>登陆</h1>'
+}
+var register={
+    template:'<h1>成长之策</h1>'
+}
+var routerobj = new VueRouter({
+    routes:[
+            {
+                 // {path:'/accont/login',component:lalala}
+                //想要实现路由都嵌套，不能直接按上面那样写，因为按照这一个格式，说明嵌套在里面都那个小路由和外面都那个大路由是平级的，
+                //而且前面带有 / ，说明是跟路径，不管前面有什么，都不会显示，是按照跟路径啦解析的
+                //下面是第一种嵌套都方式，通常都好似使用第一种的
+                path:'/accont',
+                component:lalala,   
+                children:[
+                    //注意：path后面的引号里面不写 / 
+                    {path:'login',component:login},
+                    {path:'register',component:register}
+                ]
+            }
+        
+
+    ]
+            //第二种方法，是在chikdren里面的path内写 / ，着表示跟路径，这样在上面的router-link里面写to="/register",就可以了
+            //这样也会实现第一种方式的功能，但是不会在login的前面显示accont，可能会使用户不明白
+    // routes:[
+    //         {
+    //           
+    //             path:'/accont',
+    //             component:lalala,   
+    //             children:[
+    //                
+    //                 {path:'/login',component:login},
+    //                 {path:'/register',component:register}
+    //             ]
+    //         }
+        
+
+    // ]
+})
+
+
+var aa =new Vue({
+  el: '#app',
+  data: {
+    
+  },
+  methods: {
+    
+  },
+  router:routerobj
+                       
+                                   
+  
+})
+</script>
+</body>
+</html>

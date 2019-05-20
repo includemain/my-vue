@@ -1,0 +1,56 @@
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Vue </title>
+<script src="js/vue-2.4.0.js"></script>
+<script src="js/vue-router-3.0.1.js"></script> 
+
+</head>
+<body>
+<div id="app">
+    
+    <input type="text" v-model="aaa" >+
+    <input type="text" v-model="bbb" >=
+    <input type="text" v-model = "ccc">
+
+</div>
+
+<script>
+
+var aa =new Vue({
+  el: '#app',
+  data: {
+    aaa:'',
+    bbb:''
+    //注意，这里并没有定义ccc，因为ccc是要写在computed里面的，不需要在这里定义
+  },
+  methods: {
+  
+  },
+  computed: {       
+      'ccc':function(){
+          return this.aaa +'--'+this.bbb
+      }
+              //与watch的区别，不管对改变对值怎样，一定要return一个东西出去，wat不需要
+              //computed具有缓存性，本身是一个函数，但是通常是当作一个属性去使用
+              //computed只是对数据进行简单对处理，watch里面可以写一些业务逻辑，是一个正常对函数
+              //一、这里面的ccc，时一个属性，本来时应该写在data里面，写在这里面就算是一个方法，这个方法后面不能加（）传参数，把他当作一个属性去用
+              //二、这个函数里面所引用的任意一个data里面的值发生改变，就会重新计算这个值，重新调用这个函数
+              //三、这个求值的结果会被缓存起来，只要里面的东西不发生改变，就不会调用函数
+
+
+  }
+
+
+                       
+                                   
+  
+})
+</script>
+</body>
+</html>

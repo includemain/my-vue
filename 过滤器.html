@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./js/vue-2.4.0.js"></script>
+    <link rel="stylesheet" href="./css/bootstrap.css">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        
+        <div class="panel panel-primary">
+              <div class="panel-heading">
+                    <h3 class="panel-title">过滤器</h3>
+              </div>
+              <div class="panel-body">
+                     {{msg | ying}}<br> <!--使用的过滤器，| 后面的是过滤器的名称 -->
+                     {{msg2 | emmm}}<br>
+                     {{msg2 | emmm2}}<br>
+                     {{msg2 | emmm3('很邪恶')}}<br><!-- //在过滤器中定义好要改成的参数 -->
+                     {{msg2 | emmm | ying}}
+              </div>
+        </div>
+        
+
+    </div>
+    <script>
+    //全局的过滤器，function里面的data表示的史 | 前面的数据，是规定死的
+        Vue.filter('ying',function(data){
+            return data + 'yingying'
+        })
+        Vue.filter('emmm',function(data){
+                //replace表示的替换方法，在data中找到这个指定的字符串，替换掉，但是只能替换第一个
+            return data.replace('单纯','邪恶')
+        })
+        Vue.filter('emmm2',function(data){
+                //可以通过正则表达式来实现将所有的都哦替换掉
+            return data.replace(/单纯/g,'邪恶')
+        })
+        Vue.filter('emmm3',function(data,arg){
+                //第二个参数就是要替换成的参数，可以传悌多个参数
+            return data.replace(/单纯/g,arg)
+        })
+        //可以调用多个过滤器，即最后一个，他会将第一个过滤器处理好，然后交给第二个过滤器
+
+        new Vue({
+        el:'#app',
+        data:{
+            msg:'嘤嘤嘤',
+            msg2:'单纯的男人单纯的男人'
+        },
+        methods:{
+            
+        },
+        //私有的过滤器
+        fliter:{
+            dateformat:function(data,data2){
+                //过滤器的名称和函数
+                //如果私有的过滤器和全局的是一致的，则会优先调用私有的
+            }
+        }
+        
+    })
+    </script>
+</body>
+</html>

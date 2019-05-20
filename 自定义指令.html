@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./js/vue-2.4.0.js"></script>
+    <link rel="stylesheet" href="./css/bootstrap.css">
+</head>
+
+<body>
+    <div id="app">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Panel title</h3>
+            </div>
+            <div class="panel-body">
+
+                <legend>Form title</legend>
+                <div class="form-group form-inline">
+                    <label for="">label</label>
+                    <input type="text" class="form-control" id="" placeholder="Input field" @keyup.enter="add()"
+                        v-model="list" v-focus>
+                    <label for="">model</label>
+                         <!-- 在每一个指令里面，要是想操作dom元素，都要使用‘’将那个东西括起来，否则它会默认把red当成一个data里面的值，会去data看i面搜索， -->
+                         <!-- 而使用 v-color = "'red'" 来写，就会将red当作哟个参数传悌到derective指令那里面的函数中 -->
+                    <div style="display: inline-block;border: 1px solid salmon" v-color="'red'">{{list}}</div>
+                    <label for="">keyup</label>
+                    <div style="display: inline-block;border: 1px solid salmon" v-fontsize = "'50px'">{{msg}}</div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script>
+        //自定义指令，设置名称为 enter，它的键盘码为113，然后在html里面使用，则enter表示的就是113按键码
+        // vue也给一些常用的键盘码提供了写好的名称
+        Vue.config.keyCodes.enter = 15
+        
+        //自定义类似于v-model这样的指令，document.getelementbyid().focus()
+        // 参数1是指令的名称，在html中写v-focus，这里面写focus就ok，参数2是一个对象，下面三个函数中，第一个指定必须用el，表示被绑定的那个元素，是原生的js
+        Vue.directive('focus', {
+            bind: function (el) {
+                // 每当元素绑定到元素上时，就会执行bind函数，只执行一次，此时还没将元素渲染到页面上去，直接调用focus时没用的     
+            },
+            inserted: function (el) {
+                el.focus()    //inserted表示元素插入到dom中时，执行的函数，也只执行一次
+            },
+            updated: function (el) {
+                // vnode更新的时候，会执行	
+            }
+
+            // 当设置一个指令的行为的时候，需要关心，将元素渲染到dorm页面中后，才能执行js到函数，所以有关行为到指令都要写在inserted中
+            // 而设置元素都属性火样式的时候，比如color，只要将指令给dorm元素就可以了，不需要关心是否建立了dorm在页面中，锁业写在bind中就可以
+            // 也可以在使用bind函数时，在加个叫binding的参数，这时就要在html中写指令时。v- color = “‘blue’” ,
+            // Blue的外面要在加一层引号，如果不加引号，就会默认当作指令，到下面data中去找blue
+        })
+        new Vue({
+            el: '#app',
+            data: {
+                list: '',
+                msg: ''
+            },
+            methods: {
+                add() {
+                    this.msg = this.list
+                }
+            },
+            //通常全局的那个啥的名字都没有s，私有的有s，such as directives就是私有的
+            directives: {
+                color: {
+                    bind: function (el,aaa) {   //aaa下面可以s有很多属性，such as  value name等
+                        el.style.color = aaa.value
+                    },
+                    inserted: function () {
+
+                    },
+                    updated: function () {
+
+                    }
+                },
+                fontsize:function(el,binding){      //如果只想将js写在bind和update里面，则可以省略写这样，先当与两个里面都写了
+                    // el.style.fontSize = parseInt(binding.value) + 'px'  对应的是上面的v-model = "50"
+                    el.style.fontSize = binding.value
+                }
+
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Vue 测试实例 </title>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    
+</head>
+<body>
+<div id="app">
+  <login></login>
+  <login2></login2>
+  <login3 :babamsg="msg"></login3><!--子组件要先引用副组件上面的东西，必须使用v-bind绑定这个属性，另外，还要在自己的组件定义那里再声明一下-->
+</div>
+    
+<script>
+    // Vue.component('yyy',Vue.extend({
+    //     template:'<div> <h1>自己写的啦啦啦</h1></div>'
+    // }))
+
+
+    //创建一个组件的简写方式
+        var login = {
+            template:'<h1>唧唧歪歪</h1>'
+        }
+new Vue({
+  el: '#app',
+  data: {
+    flag:false,
+    msg:'叫爸爸'
+  },
+  methods: {
+    
+  },
+  components: {
+      login2:login,
+      login, //在外面定义一个全局的变量，然后直接将这个变量丢在里面，会默认的解析这个属性, //把它当作  'login':login   加不加外面的引号似乎都可以
+      login3:{
+          data(){     //这个是子组件自身私有的东西，不是副组件传回来的data
+            return {
+              title:'123'
+            }
+          },
+          template:'<h1>唧唧复唧唧---{{babamsg}}</h1>',//可以将这个大的vue对象看成一个大的组件，里面的component就是他的一个小组件
+                                                //在默认情况下，直接在template中引用msg是不管用的，
+          props:['babamsg']   //再子组件中，专门定义了一个标签来接收父组件为子组件提供的data，自身的data里面的东西都是可读可写的，
+                              //这个props数组里面的东西都是父组件的东西，只能读，不能写
+
+      }                         
+                                   
+  }
+})
+</script>
+</body>
+</html>

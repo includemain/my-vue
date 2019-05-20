@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/bootstrap.css">
+    <script src="./js/vue-2.4.0.js"></script>
+    <script src="./js/vue-resource-1.3.4.js"></script>
+</head>
+
+<body>
+    <div id="app">
+
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Panel title</h3>
+            </div>
+            <div class="panel-body">
+                <span class="input-group-btn form-inline">
+
+                    <input type="text" class="form-control" value="" required="required" pattern="" title="">
+                    <button type="button" class="btn btn-primary" @click="getinfo">get请求</button>
+                    <input type="text" class="form-control" value="" required="required" pattern="" title="" style="margin-left: 30px;">
+                    <button type="button" class="btn btn-primary" @click="postinfo">post请求</button>
+                    
+                </span>
+            </div>
+        </div>
+
+
+
+
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                list: '',
+                msg: ''
+            },
+            methods: {
+                getinfo(){
+                    this.$http.get('http://www.liulongbin.top:3005/api/getlunbo').then(function(result){
+                        console.log(result.body)
+                    })
+                },
+                postinfo(){
+                    //
+                    this.$http.post('http://vue.studyit.io/api/post',{},{emulateJSON:true}).then(result =>{
+                        console.log(result.body)
+
+                    })
+                }
+
+            },
+            directives: {
+
+            }
+        })
+    </script>
+</body>
+
+</html>
